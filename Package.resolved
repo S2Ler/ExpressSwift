@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log.git",
+        "state": {
+          "branch": "master",
+          "revision": "55c927dd31fb5d37b9cad6b707cbe9bb2568c71f",
+          "version": null
+        }
+      },
+      {
+        "package": "swift-nio",
+        "repositoryURL": "https://github.com/apple/swift-nio.git",
+        "state": {
+          "branch": null,
+          "revision": "b8368b6e09b7993896c42a6199103a73ecc1dbf9",
+          "version": "2.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
