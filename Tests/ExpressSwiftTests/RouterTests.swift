@@ -120,7 +120,7 @@ class RouterTests: XCTestCase {
     let router = Router()
     var topRouter = router
     var finalRoute: String = ""
-    for i in 0..<10_000 {
+    for i in 0..<1_000 {
       let newRouter = Router()
       newRouter.all { (_, _) in
         return true
