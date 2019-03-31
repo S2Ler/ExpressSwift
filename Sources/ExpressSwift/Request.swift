@@ -30,9 +30,12 @@ public class Request {
   }
 }
 
-extension Request {
-  public func json<T: Decodable>(_ type: T.Type) throws -> T? {
-    guard let body = body else { return nil }
+public extension Request {
+  enum JsonError: Swift.Error {
+    case bodyIsEmpty
+  }
+  func json<T: Decodable>(_ type: T.Type) throws -> T {
+    guard let body = body else { throw JsonError.bodyIsEmpty }
     let decoder = JSONDecoder()
     return try decoder.decode(type, from: body)
   }
