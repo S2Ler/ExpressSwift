@@ -1,4 +1,4 @@
-@testable import ExpressSwift
+import ExpressSwift
 import XCTest
 
 public final class RouterPerformanceTests: XCTestCase {

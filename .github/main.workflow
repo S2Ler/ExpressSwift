@@ -10,6 +10,6 @@ action "Swift Package Build" {
 
 action "Swift Package Test" {
   uses = "diejmon/ExpressSwift@master"
-  runs = "swift test --configuration release"
+  runs = "swift test"
   needs = ["Swift Package Build"]
 }

@@ -1,4 +1,4 @@
-@testable import ExpressSwift
+import ExpressSwift
 import Foundation
 import NIOHTTP1
 
