@@ -1,0 +1,18 @@
+on: push
+name: ExpressSwift Linux Build
+jobs:
+  swiftPackageBuild:
+    name: Swift Package Build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Swift Package Build
+      uses: diejmon/ExpressSwift@master
+      with:
+        entrypoint: swift
+        args: build --configuration release
+    - name: Swift Package Test
+      uses: diejmon/ExpressSwift@master
+      with:
+        entrypoint: swift
+        args: test
