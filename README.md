@@ -1,5 +1,7 @@
 # ExpressSwift
 
+![ExpressSwift Linux Build](https://github.com/S2Ler/ExpressSwift/workflows/ExpressSwift%20Linux%20Build/badge.svg)
+
 Swift 5.2, macOS, Linux, ARM64, Raspberry Pi
 
 [ExpressJS](https://expressjs.com) inspired web server framework on top of [Swift NIO](https://github.com/apple/swift-nio).
