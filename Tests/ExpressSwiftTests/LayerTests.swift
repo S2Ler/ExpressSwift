@@ -7,8 +7,18 @@ final class LayerTests: XCTestCase {
     let layer = Layer(kind: .method(.GET), middleware: makeMiddleware { _, _ in
       return false
     })
-    let getR = Request(head: .init(version: HTTPVersion(major: 1, minor: 1), method: .GET, uri: ""), body: nil)
-    let postR = Request(head: .init(version: HTTPVersion(major: 1, minor: 1), method: .POST, uri: ""), body: nil)
+    let getR = Request(head: .init(version: HTTPVersion(major: 1, minor: 1),
+                                   method: .GET,
+                                   uri: ""),
+                       body: nil,
+                       localAddress: nil,
+                       remoteAddress: nil)
+    let postR = Request(head: .init(version: HTTPVersion(major: 1, minor: 1),
+                                    method: .POST,
+                                    uri: ""),
+                        body: nil,
+                        localAddress: nil,
+                        remoteAddress: nil)
     var parameters: [String: String] = [:]
     XCTAssertTrue(layer.canHandle(getR, parameters: &parameters))
     XCTAssertFalse(layer.canHandle(postR, parameters: &parameters))
@@ -19,9 +29,24 @@ final class LayerTests: XCTestCase {
       return false
     })
 
-    let getRWithPath = Request(head: .init(version: HTTPVersion(major: 1, minor: 1), method: .GET, uri: "/name"), body: nil)
-    let getRWithoutPath = Request(head: .init(version: HTTPVersion(major: 1, minor: 1), method: .GET, uri: "/"), body: nil)
-    let postR = Request(head: .init(version: HTTPVersion(major: 1, minor: 1), method: .POST, uri: ""), body: nil)
+    let getRWithPath = Request(head: .init(version: HTTPVersion(major: 1, minor: 1),
+                                           method: .GET,
+                                           uri: "/name"),
+                               body: nil,
+                               localAddress: nil,
+                               remoteAddress: nil)
+    let getRWithoutPath = Request(head: .init(version: HTTPVersion(major: 1, minor: 1),
+                                              method: .GET,
+                                              uri: "/"),
+                                  body: nil,
+                                  localAddress: nil,
+                                  remoteAddress: nil)
+    let postR = Request(head: .init(version: HTTPVersion(major: 1, minor: 1),
+                                    method: .POST,
+                                    uri: ""),
+                        body: nil,
+                        localAddress: nil,
+                        remoteAddress: nil)
 
     var parameters: [String: String] = [:]
     XCTAssertTrue(layer.canHandle(getRWithPath, parameters: &parameters))

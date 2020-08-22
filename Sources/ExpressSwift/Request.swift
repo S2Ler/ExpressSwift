@@ -1,5 +1,5 @@
 import Foundation
-
+import NIO
 import NIOHTTP1
 
 public class Request {
@@ -11,9 +11,17 @@ public class Request {
   public let query: [URLQueryItem]?
   internal var parameters: [String: String] = [:]
 
-  public init(head: HTTPRequestHead, body: Data?) {
+  public let localAddress: SocketAddress?
+  public let remoteAddress: SocketAddress?
+
+  public init(head: HTTPRequestHead,
+              body: Data?,
+              localAddress: SocketAddress?,
+              remoteAddress: SocketAddress?) {
     self.head = head
     self.body = body
+    self.localAddress = localAddress
+    self.remoteAddress = remoteAddress
 
     let urlComponents = URLComponents(string: head.uri)!
 

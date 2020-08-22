@@ -1,50 +1,18 @@
-# ExpressSwift
-
-Swift 5.2, macOS, Linux, ARM64, Raspberry Pi
-
-[ExpressJS](https://expressjs.com) inspired web server framework on top of [Swift NIO](https://github.com/apple/swift-nio).
-
-## TODO:
-- [ ] Error handling
-
-## Installation
-
-Use [SPM](https://swift.org/package-manager/).
-
-Sample `Package.swift`
-```swift
-// swift-tools-version:5.2
-import PackageDescription
-
-let package = Package(
-  name: "ProjectName",
-  products: [
-    .executable(name: "ProjectName", targets: ["ProjectName"]),
-  ],
-  dependencies: [
-    .package(url: "https://github.com/diejmon/ExpressSwift.git", .upToNextMinor(from: "0.0.1")),
-  ],
-  targets: [
-    .target(
-      name: "ProjectName",
-      dependencies: [
-        .product(name: "ExpressSwift", package: "ExpressSwift"),
-      ]),
-  ],
-  swiftLanguageVersions: [.v5]
-)
-```
-
-## Usage
-
-```swift
-import ExpressSwift
 import Foundation
+import ExpressSwift
+import NIOSSL
+
+var config: Express.Config = .default
+
+let certificateChain = try NIOSSLCertificate.fromPEMFile(certificatesPath())
+let tlsConfiguration = TLSConfiguration.forServer(certificateChain: certificateChain.map { .certificate($0) },
+                                                  privateKey: .file(privateKeyPath()))
+config.sslContext = try NIOSSLContext(configuration: tlsConfiguration)
 
 var cities: [String] = ["Belarus,Minsk"]
 let citiesLock = NSLock()
 
-let express = Express(config: .default)
+let express = Express(config: config)
 express.all { _, _ in
   print("Will be called for every request")
   // Means that other route will be able to handle request.
@@ -105,13 +73,4 @@ todoRouter.method(.POST) { (request, response) -> Bool in
 // When /todo route is found, the handling will proceed to todoRouter with /todo part substituted from route
 express.use("/todo", todoRouter)
 
-express.listen(8080)
-```
-
-## Setting up HTTPS server
-
-Provide `NIOSSLContext` in `Express.Config`. See [HttpsExample](Sources/HttpsExample)
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-Please make sure to update tests as appropriate.
+express.listen(8443)

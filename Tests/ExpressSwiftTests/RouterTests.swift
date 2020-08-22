@@ -1,4 +1,5 @@
 import ExpressSwift
+import NIO
 import NIOHTTP1
 import XCTest
 
@@ -153,5 +154,26 @@ class RouterTests: XCTestCase {
     _ = router.handle(Request.makeSample(.GET, lastRoute), Response.makeForUnitTests())
 
     // App shouldn't crash
+  }
+
+  func testRemoteAddress() {
+    let router = Router()
+    var routerCalled = false
+    let remoteIP = "192.168.0.1"
+    let remotePort = 8000
+
+    router.method(.GET, makeMiddleware { request, _ in
+      XCTAssertEqual(request.remoteAddress?.port, remotePort)
+      XCTAssertEqual(request.remoteAddress?.description, "[IPv4]\(remoteIP):\(remotePort)")
+      routerCalled = true
+      return true
+    })
+
+    let req = Request.makeSample(.GET, "/", remoteAddress: try! SocketAddress (ipAddress: "192.168.0.1", port: 8000))
+    let res = Response.makeForUnitTests()
+    let shouldContinueHandling = router.handle(req, res)
+
+    XCTAssertTrue(routerCalled)
+    XCTAssertTrue(shouldContinueHandling)
   }
 }

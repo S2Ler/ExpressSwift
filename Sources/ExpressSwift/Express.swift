@@ -1,6 +1,7 @@
 import Logging
 import NIO
 import NIOHTTP1
+import NIOSSL
 
 open class Express: Router {
   private let config: Config
@@ -19,8 +20,18 @@ open class Express: Router {
       .serverChannelOption(ChannelOptions.backlog, value: Int32(backlog))
       .serverChannelOption(reuseAddrOpt, value: 1)
       .childChannelInitializer { channel in
-        channel.pipeline.configureHTTPServerPipeline().flatMap { _ in
-          channel.pipeline.addHandler(HTTPHandler(router: self))
+        if let sslContext = self.config.sslContext {
+          let sslServerHandler = NIOSSLServerHandler(context: sslContext)
+          return channel.pipeline.addHandler(sslServerHandler).flatMap {
+            channel.pipeline.configureHTTPServerPipeline().flatMap {
+              channel.pipeline.addHandler(HTTPHandler(router: self))
+            }
+          }
+        }
+        else {
+          return channel.pipeline.configureHTTPServerPipeline().flatMap { _ in
+            channel.pipeline.addHandler(HTTPHandler(router: self))
+          }
         }
       }
       .childChannelOption(ChannelOptions.socket(IPPROTO_TCP, TCP_NODELAY), value: 1)

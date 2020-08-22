@@ -50,7 +50,10 @@ internal final class HTTPHandler: ChannelInboundHandler {
       switch state {
       case .ready: assert(false, "Unexpected HTTPClientResponse.end when awaiting request head")
       case .parsingBody(let head, let data):
-        let request = Request(head: head, body: data)
+        let request = Request(head: head,
+                              body: data,
+                              localAddress: context.localAddress,
+                              remoteAddress: context.remoteAddress)
         let response = Response(channel: context.channel)
         let shouldContinueHandling = router.handle(request, response)
         if shouldContinueHandling {

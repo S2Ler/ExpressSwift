@@ -1,4 +1,4 @@
-FROM swift:5.0
+FROM swift:5.2
 USER root
 LABEL "com.github.actions.name"="ExpressSwift-Actions"
 LABEL "com.github.actions.description"=""
