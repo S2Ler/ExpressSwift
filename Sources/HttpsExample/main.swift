@@ -5,7 +5,7 @@ import NIOSSL
 var config: Express.Config = .default
 
 let certificateChain = try NIOSSLCertificate.fromPEMFile(certificatesPath())
-let tlsConfiguration = TLSConfiguration.forServer(certificateChain: certificateChain.map { .certificate($0) },
+let tlsConfiguration = TLSConfiguration.makeServerConfiguration(certificateChain: certificateChain.map { .certificate($0) },
                                                   privateKey: .file(privateKeyPath()))
 config.sslContext = try NIOSSLContext(configuration: tlsConfiguration)
 
