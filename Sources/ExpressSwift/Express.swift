@@ -57,7 +57,15 @@ open class Express: Router {
 
   open func listen(_ port: Int = 1337,
                    _ host: String = "localhost",
-                   _ backlog: Int = 256) {
+                   _ backlog: Int = 256) throws {
+    let server = createServer(port, host, backlog)
+    try server.closeFuture.wait()
+  }
+
+  @discardableResult
+  open func createServer(_ port: Int = 1337,
+                         _ host: String = "localhost",
+                         _ backlog: Int = 256) -> Channel {
     let bootstrap = createServerBootstrap(backlog)
 
     do {
@@ -69,7 +77,7 @@ open class Express: Router {
         logger.info("Server running on: \(host):\(port)")
       }
 
-      try serverChannel.closeFuture.wait() // runs forever
+      return serverChannel
     }
     catch {
       fatalError("Failed to start server: \(error)")
