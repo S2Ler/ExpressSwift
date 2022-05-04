@@ -68,3 +68,4 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 /ExpressSwift.xcodeproj
 /.swiftpm
+.DS_Store
